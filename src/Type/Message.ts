@@ -19,17 +19,17 @@ export const messageAttachmentSchema = z.object({
 
 // Zod schema for TypeMessage
 export const messageSchema = z.object({
-	id: z.string().optional().describe('A unique identifier for the message.'),
-	grantId: z.string().optional().describe('A unique identifier for the grant that allows to send messages on behalf of a given email, associated with the message.'),
+	id: z.string().optional().describe('This property value is returned by the API and should only be set when deleting or reading a message.'),
+	grantId: z.string().optional().describe('The grant ID that allows to send messages on behalf of a given email, associated with the message.'),
 	body: z.string().describe('The main HTML content of the message.'),
 	attachments: z.array(messageAttachmentSchema).optional().describe('A list of attachments included with the message.'),
 	date: z.number().optional().describe('The timestamp when the message was created, typically in milliseconds since the Unix epoch.'),
-	from: z.array(messageAddressSchema).optional().describe('An array of email addresses representing the sender(s) of the message.')
+	from: z.array(messageAddressSchema).optional().describe('This property should be set to the list of sender email addresses for the message.')
 });
 
 // Zod schema for TypeEmailMessage
 export const emailMessageSchema = messageSchema.extend({
-	replyToMessageId: z.string().optional().describe('The ID of the message this email is replying to, if applicable.'),
+	replyToMessageId: z.string().optional().describe('This property should be set to the ID of the message it is replying to.'),
 	to: z.array(messageAddressSchema).optional().describe('An array of email addresses representing the primary recipient(s) of the email.'),
 	cc: z.array(messageAddressSchema).optional().describe('An array of email addresses representing the recipients who will receive a carbon copy of the email.'),
 	bcc: z.array(messageAddressSchema).optional().describe('An array of email addresses representing the recipients who will receive a blind carbon copy of the email.'),
